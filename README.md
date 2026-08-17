@@ -1,7 +1,7 @@
 # Lifecycle
 
 Lifetime, event, and resource management.
-<p style="color: red">test</p>
+
 ```bash
 pnpm add @gottheflag/lifecycle
 ```
