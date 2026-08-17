@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta
+		name="description"
+		content="Interactive playground for @gottheflag/lifecycle"
+	/>
+	<title>Lifecycle Playground</title>
+	<link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+	<main class="shell">
+		<header class="hero">
+			<div>
+				<p class="eyebrow">@gottheflag/lifecycle</p>
+				<h1>Own it. Use it. Destroy it.</h1>
+				<p>
+					Build a lifetime manually, then watch every owned piece disappear.
+				</p>
+			</div>
+
+			<div class="status-wrap">
+				<span class="status-dot" id="status-dot" aria-hidden="true"></span>
+				<strong id="status">Alive</strong>
+				<span id="generation">Lifecycle #1</span>
+			</div>
+		</header>
+
+		<section class="metrics" aria-label="Lifecycle metrics">
+			<article class="metric">
+				<span>Active timers</span>
+				<strong id="active-timers">0</strong>
+			</article>
+			<article class="metric">
+				<span>Owned resources</span>
+				<strong id="active-resources">0</strong>
+			</article>
+			<article class="metric">
+				<span>Active child work</span>
+				<strong id="active-children">0</strong>
+			</article>
+			<article class="metric">
+				<span>Event callbacks</span>
+				<strong id="event-calls">0</strong>
+			</article>
+			<article class="metric">
+				<span>Cleanups executed</span>
+				<strong id="cleanup-calls">0</strong>
+			</article>
+		</section>
+
+		<section class="workspace">
+			<article class="card controls-card">
+				<div class="card-heading">
+					<div>
+						<p class="eyebrow">Current lifetime</p>
+						<h2>Do things to it</h2>
+					</div>
+				</div>
+
+				<div class="control-groups">
+					<div class="control-group">
+						<h3>Resources</h3>
+						<div class="buttons">
+							<button data-action="timer">Add timer</button>
+							<button data-action="resource">Own resource</button>
+							<button data-action="child">Create child</button>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<h3>Cleanup</h3>
+						<div class="buttons">
+							<button data-action="defer">Defer cleanup</button>
+							<button data-action="early">Run latest early</button>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<h3>Events</h3>
+						<div class="buttons">
+							<button data-action="listen">Listen to ping</button>
+							<button data-action="once">Listen once</button>
+							<button data-action="emit">Emit ping</button>
+							<button data-action="clear">Clear ping</button>
+						</div>
+					</div>
+
+					<div class="control-group destructive-group">
+						<h3>Lifetime</h3>
+						<div class="buttons">
+							<button class="danger" data-action="destroy">Destroy lifecycle</button>
+							<button class="primary" data-action="new">New lifecycle</button>
+						</div>
+					</div>
+				</div>
+			</article>
+
+			<article class="card stack-card">
+				<div class="card-heading">
+					<div>
+						<p class="eyebrow">Ownership</p>
+						<h2>What is currently alive?</h2>
+					</div>
+				</div>
+
+				<ul class="ownership-list" id="ownership-list">
+					<li class="empty">Nothing owned yet.</li>
+				</ul>
+			</article>
+		</section>
+
+		<section class="card leak-card">
+			<div class="card-heading leak-heading">
+				<div>
+					<p class="eyebrow">Leak safety</p>
+					<h2>Destroy 2,000 lifecycles</h2>
+					<p>
+						Each lifecycle gets a real timer, listener, child, deferred cleanup,
+						and owned resource. The test passes only if every observable active
+						counter returns to zero and nothing fires after destruction.
+					</p>
+				</div>
+				<button class="primary" id="stress-test">Run stress test</button>
+			</div>
+
+			<div class="checks" id="checks">
+				<div><span>Timers released</span><strong>—</strong></div>
+				<div><span>Resources destroyed</span><strong>—</strong></div>
+				<div><span>Child work released</span><strong>—</strong></div>
+				<div><span>No post-destroy events</span><strong>—</strong></div>
+				<div><span>No double destroy</span><strong>—</strong></div>
+			</div>
+
+			<p class="note" id="stress-summary">
+				This verifies deterministic teardown behavior. Browser garbage collection
+				itself is nondeterministic, so heap profiling remains the final tool for
+				application-wide memory leak investigation.
+			</p>
+		</section>
+
+		<section class="card log-card">
+			<div class="card-heading log-heading">
+				<div>
+					<p class="eyebrow">Journal</p>
+					<h2>What actually happened</h2>
+				</div>
+				<button class="ghost" id="clear-log">Clear</button>
+			</div>
+			<ol class="log" id="log"></ol>
+		</section>
+	</main>
+
+	<script type="module" src="./index.ts"></script>
+</body>
+</html>

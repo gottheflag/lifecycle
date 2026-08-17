@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="color-scheme" content="light dark">
+	<title>@gottheflag/lifecycle — API Reference</title>
+	<meta name="description" content="API reference for @gottheflag/lifecycle.">
+	<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+	<a class="skip-link" href="#content">Skip to content</a>
+
+	<header class="topbar">
+		<div class="brand">
+			<div class="brand-mark" aria-hidden="true">L</div>
+			<div>
+				<strong>@gottheflag/lifecycle</strong>
+				<span>API Reference · 0.1.0-alpha.1</span>
+			</div>
+		</div>
+
+		<label class="search" for="docs-search">
+			<span aria-hidden="true">⌕</span>
+			<input id="docs-search" type="search" placeholder="Search API…" autocomplete="off">
+			<kbd>Ctrl K</kbd>
+		</label>
+	</header>
+
+	<div class="layout">
+		<aside class="sidebar" aria-label="Documentation navigation">
+			<nav id="docs-nav">
+				<div class="nav-group">
+					<p>Start</p>
+					<a href="#overview">Overview</a>
+					<a href="#installation">Installation</a>
+					<a href="#exports">Exports</a>
+				</div>
+
+				<div class="nav-group">
+					<p>Lifecycle</p>
+					<a href="#lifecycle">Lifecycle</a>
+					<a href="#lifecycle-constructor">constructor</a>
+					<a href="#lifecycle-destroyed">destroyed</a>
+					<a href="#lifecycle-defer">defer()</a>
+					<a href="#lifecycle-own">own()</a>
+					<a href="#lifecycle-child">child()</a>
+					<a href="#lifecycle-destroy">destroy()</a>
+					<a href="#lifecycle-dispose">Symbol.dispose</a>
+				</div>
+
+				<div class="nav-group">
+					<p>AsyncLifecycle</p>
+					<a href="#async-lifecycle">AsyncLifecycle</a>
+					<a href="#async-destroyed">destroyed</a>
+					<a href="#async-defer">defer()</a>
+					<a href="#async-own">own()</a>
+					<a href="#async-child">child()</a>
+					<a href="#async-destroy">destroy()</a>
+					<a href="#async-dispose">Symbol.asyncDispose</a>
+				</div>
+
+				<div class="nav-group">
+					<p>Events</p>
+					<a href="#events">Event model</a>
+					<a href="#events-on">on()</a>
+					<a href="#events-once">once()</a>
+					<a href="#events-emit">emit()</a>
+					<a href="#events-clear">clear()</a>
+				</div>
+
+				<div class="nav-group">
+					<p>Contracts</p>
+					<a href="#signals">Abort signal</a>
+					<a href="#children">Child lifecycles</a>
+					<a href="#ordering">Cleanup order</a>
+					<a href="#errors">Errors</a>
+					<a href="#late-registration">Late registration</a>
+					<a href="#types">Exported types</a>
+				</div>
+			</nav>
+		</aside>
+
+		<main id="content" class="content">
+			<section id="overview" class="hero doc-section" data-search="overview lifecycle resource events cleanup ownership">
+				<p class="eyebrow">Reference</p>
+				<h1>Lifecycle</h1>
+				<p class="lead">Typed lifetime, event, and resource management for JavaScript and TypeScript.</p>
+				<div class="facts">
+					<div><span>Package</span><strong>@gottheflag/lifecycle</strong></div>
+					<div><span>Version</span><strong>0.1.0-alpha.1</strong></div>
+					<div><span>Modules</span><strong>ESM + CJS</strong></div>
+					<div><span>License</span><strong>Apache-2.0</strong></div>
+				</div>
+			</section>
+
+			<section id="installation" class="doc-section" data-search="installation install pnpm npm yarn bun package">
+				<div class="section-heading">
+					<p class="eyebrow">Start</p>
+					<h2>Installation</h2>
+				</div>
+				<div class="install-grid">
+					<div class="install-row"><span>pnpm</span><code>pnpm add @gottheflag/lifecycle</code><button class="copy" data-copy="pnpm add @gottheflag/lifecycle">Copy</button></div>
+					<div class="install-row"><span>npm</span><code>npm install @gottheflag/lifecycle</code><button class="copy" data-copy="npm install @gottheflag/lifecycle">Copy</button></div>
+					<div class="install-row"><span>yarn</span><code>yarn add @gottheflag/lifecycle</code><button class="copy" data-copy="yarn add @gottheflag/lifecycle">Copy</button></div>
+					<div class="install-row"><span>bun</span><code>bun add @gottheflag/lifecycle</code><button class="copy" data-copy="bun add @gottheflag/lifecycle">Copy</button></div>
+				</div>
+			</section>
+
+			<section id="exports" class="doc-section" data-search="exports Lifecycle AsyncLifecycle LifecycleOptions Cleanup AsyncCleanup Destroyable AsyncDestroyable EventArguments EventListener">
+				<div class="section-heading">
+					<p class="eyebrow">Package surface</p>
+					<h2>Exports</h2>
+				</div>
+				<div class="symbol-table">
+					<div><code>Lifecycle</code><span>Class</span><p>Synchronous lifetime, ownership, cleanup, child, and event management.</p></div>
+					<div><code>AsyncLifecycle</code><span>Class</span><p>Asynchronous lifetime management with awaited teardown.</p></div>
+					<div><code>LifecycleOptions</code><span>Type</span><p>Constructor options accepted by <code>Lifecycle</code>.</p></div>
+					<div><code>Cleanup</code><span>Type</span><p>Synchronous cleanup callback.</p></div>
+					<div><code>AsyncCleanup</code><span>Type</span><p>Synchronous or asynchronous cleanup callback.</p></div>
+					<div><code>Destroyable</code><span>Type</span><p>Resource exposing synchronous <code>destroy()</code>.</p></div>
+					<div><code>AsyncDestroyable</code><span>Type</span><p>Resource exposing sync or async <code>destroy()</code>.</p></div>
+					<div><code>EventArguments</code><span>Type</span><p>Conditional argument tuple used by typed event emission.</p></div>
+					<div><code>EventListener</code><span>Type</span><p>Typed synchronous event listener.</p></div>
+				</div>
+			</section>
+
+			<section id="lifecycle" class="doc-section api-class" data-search="Lifecycle synchronous class">
+				<div class="class-heading">
+					<div><p class="eyebrow">Class</p><h2>Lifecycle&lt;TEvents&gt;</h2></div>
+					<span class="badge">sync</span>
+				</div>
+				<p>Owns everything associated with one synchronous lifetime: deferred cleanup, destroyable resources, child lifecycles, and typed event listeners.</p>
+				<div class="signature">class Lifecycle&lt;TEvents extends object = NoEvents&gt;</div>
+			</section>
+
+			<article id="lifecycle-constructor" class="api-card doc-section" data-search="Lifecycle constructor options signal">
+				<div class="api-title"><h3>constructor</h3><span>Lifecycle</span></div>
+				<div class="signature">new Lifecycle&lt;TEvents&gt;(options?: LifecycleOptions)</div>
+				<p>Creates a synchronous lifecycle. When an abort-compatible signal is supplied, aborting that signal destroys the lifecycle. An already-aborted signal creates an already-destroyed lifecycle.</p>
+			</article>
+
+			<article id="lifecycle-destroyed" class="api-card doc-section" data-search="Lifecycle destroyed getter boolean">
+				<div class="api-title"><h3>destroyed</h3><span>getter</span></div>
+				<div class="signature">get destroyed(): boolean</div>
+				<p>Indicates whether destruction has started. Once true, it never becomes false.</p>
+			</article>
+
+			<article id="lifecycle-defer" class="api-card doc-section" data-search="Lifecycle defer cleanup early exactly once">
+				<div class="api-title"><h3>defer()</h3><span>cleanup</span></div>
+				<div class="signature">defer&lt;TCleanup extends Cleanup&gt;(cleanup: TCleanup): Cleanup</div>
+				<p>Registers synchronous cleanup work. Returns an exactly-once cleanup function that can execute the registered cleanup early and remove it from lifecycle teardown.</p>
+				<ul class="contract"><li>Async cleanup callbacks are rejected by the type system.</li><li>Registration after destruction executes immediately.</li><li>Repeated execution is ignored.</li></ul>
+			</article>
+
+			<article id="lifecycle-own" class="api-card doc-section" data-search="Lifecycle own resource Destroyable destroy">
+				<div class="api-title"><h3>own()</h3><span>resource</span></div>
+				<div class="signature">own&lt;TResource extends Destroyable&gt;(resource: TResource): TResource</div>
+				<p>Registers a synchronous destroyable resource with the lifecycle and returns the same resource unchanged.</p>
+				<ul class="contract"><li>The resource must expose synchronous <code>destroy(): void</code>.</li><li>Owned resources participate in normal reverse-order teardown.</li><li>Ownership after destruction destroys the resource immediately.</li></ul>
+			</article>
+
+			<article id="lifecycle-child" class="api-card doc-section" data-search="Lifecycle child children events ownership">
+				<div class="api-title"><h3>child()</h3><span>hierarchy</span></div>
+				<div class="signature">child&lt;TChildEvents extends object = NoEvents&gt;(): Lifecycle&lt;TChildEvents&gt;</div>
+				<p>Creates an independently typed child lifecycle owned by the parent. Destroying the child early detaches it from the parent. Destroying the parent destroys every still-owned child.</p>
+			</article>
+
+			<article id="lifecycle-destroy" class="api-card doc-section" data-search="Lifecycle destroy teardown LIFO errors listeners">
+				<div class="api-title"><h3>destroy()</h3><span>termination</span></div>
+				<div class="signature">destroy(): void</div>
+				<p>Ends the lifecycle exactly once. Event delivery stops first, then active cleanup entries run in reverse registration order. Every cleanup is attempted even when another cleanup throws.</p>
+			</article>
+
+			<article id="lifecycle-dispose" class="api-card doc-section" data-search="Lifecycle Symbol.dispose using explicit resource management">
+				<div class="api-title"><h3>Symbol.dispose</h3><span>disposal</span></div>
+				<div class="signature">[Symbol.dispose](): void</div>
+				<p>Delegates to <code>destroy()</code> and makes the lifecycle compatible with synchronous explicit resource management.</p>
+			</article>
+
+			<section id="async-lifecycle" class="doc-section api-class" data-search="AsyncLifecycle asynchronous class await async cleanup">
+				<div class="class-heading">
+					<div><p class="eyebrow">Class</p><h2>AsyncLifecycle&lt;TEvents&gt;</h2></div>
+					<span class="badge">async</span>
+				</div>
+				<p>Asynchronous counterpart to <code>Lifecycle</code>. Cleanup entries may return promises and are awaited sequentially in reverse registration order. Event dispatch remains synchronous.</p>
+				<div class="signature">class AsyncLifecycle&lt;TEvents extends object = NoEvents&gt;</div>
+			</section>
+
+			<article id="async-destroyed" class="api-card doc-section" data-search="AsyncLifecycle destroyed getter">
+				<div class="api-title"><h3>destroyed</h3><span>getter</span></div>
+				<div class="signature">get destroyed(): boolean</div>
+				<p>Indicates whether asynchronous destruction has started. It may be true while cleanup work is still being awaited.</p>
+			</article>
+
+			<article id="async-defer" class="api-card doc-section" data-search="AsyncLifecycle defer async cleanup early">
+				<div class="api-title"><h3>defer()</h3><span>cleanup</span></div>
+				<div class="signature">defer(cleanup: AsyncCleanup): AsyncCleanup</div>
+				<p>Registers synchronous or asynchronous cleanup work and returns an exactly-once cleanup function that may be awaited when executed early.</p>
+				<ul class="contract"><li>Registration after destruction throws.</li><li>Cleanup is awaited during destruction.</li><li>Repeated execution is ignored.</li></ul>
+			</article>
+
+			<article id="async-own" class="api-card doc-section" data-search="AsyncLifecycle own AsyncDestroyable resource">
+				<div class="api-title"><h3>own()</h3><span>resource</span></div>
+				<div class="signature">own&lt;TResource extends AsyncDestroyable&gt;(resource: TResource): TResource</div>
+				<p>Owns a resource whose <code>destroy()</code> method may complete synchronously or return a promise-like value.</p>
+			</article>
+
+			<article id="async-child" class="api-card doc-section" data-search="AsyncLifecycle child hierarchy">
+				<div class="api-title"><h3>child()</h3><span>hierarchy</span></div>
+				<div class="signature">child&lt;TChildEvents extends object = NoEvents&gt;(): AsyncLifecycle&lt;TChildEvents&gt;</div>
+				<p>Creates an independently typed asynchronous child owned by the parent. Early child destruction detaches it from parent teardown.</p>
+			</article>
+
+			<article id="async-destroy" class="api-card doc-section" data-search="AsyncLifecycle destroy Promise LIFO concurrent same promise AggregateError">
+				<div class="api-title"><h3>destroy()</h3><span>termination</span></div>
+				<div class="signature">destroy(): Promise&lt;void&gt;</div>
+				<p>Starts teardown once and returns the destruction promise. Cleanup entries are awaited sequentially in reverse registration order. Concurrent calls receive the same promise.</p>
+			</article>
+
+			<article id="async-dispose" class="api-card doc-section" data-search="AsyncLifecycle Symbol.asyncDispose await using explicit resource management">
+				<div class="api-title"><h3>Symbol.asyncDispose</h3><span>disposal</span></div>
+				<div class="signature">[Symbol.asyncDispose](): Promise&lt;void&gt;</div>
+				<p>Delegates to <code>destroy()</code> and makes the lifecycle compatible with asynchronous explicit resource management.</p>
+			</article>
+
+			<section id="events" class="doc-section api-class" data-search="events Eventful typed event model listeners emit">
+				<div class="class-heading"><div><p class="eyebrow">Shared API</p><h2>Typed events</h2></div><span class="badge">sync dispatch</span></div>
+				<p>Both lifecycle classes expose the same typed synchronous event API. Event spaces belong to each lifecycle independently and do not inherit or bubble between parent and child lifecycles.</p>
+			</section>
+
+			<article id="events-on" class="api-card doc-section" data-search="events on listener subscribe cleanup off">
+				<div class="api-title"><h3>on()</h3><span>event</span></div>
+				<div class="signature">on&lt;TKey extends keyof TEvents&gt;(type: TKey, listener: EventListener&lt;TEvents[TKey]&gt;): Cleanup</div>
+				<p>Registers a synchronous listener for an event key. Returns an exactly-once unsubscribe function.</p>
+			</article>
+
+			<article id="events-once" class="api-card doc-section" data-search="events once listener one time">
+				<div class="api-title"><h3>once()</h3><span>event</span></div>
+				<div class="signature">once&lt;TKey extends keyof TEvents&gt;(type: TKey, listener: EventListener&lt;TEvents[TKey]&gt;): Cleanup</div>
+				<p>Registers a synchronous listener that unsubscribes before its first invocation. Returns an unsubscribe function for cancellation before emission.</p>
+			</article>
+
+			<article id="events-emit" class="api-card doc-section" data-search="events emit payload void EventArguments errors">
+				<div class="api-title"><h3>emit()</h3><span>event</span></div>
+				<div class="signature">emit&lt;TKey extends keyof TEvents&gt;(type: TKey, ...args: EventArguments&lt;TEvents[TKey]&gt;): void</div>
+				<p>Synchronously dispatches an event to the listeners registered on that lifecycle. Void events require no payload. Emission after destruction is ignored.</p>
+			</article>
+
+			<article id="events-clear" class="api-card doc-section" data-search="events clear listeners all event type">
+				<div class="api-title"><h3>clear()</h3><span>event</span></div>
+				<div class="signature">clear(): void<br>clear&lt;TKey extends keyof TEvents&gt;(type: TKey): void</div>
+				<p>Removes every event listener or every listener for one event key. It does not run deferred cleanup, destroy resources, or destroy child lifecycles.</p>
+			</article>
+
+			<section id="signals" class="doc-section reference-block" data-search="signal AbortSignal LifecycleOptions abort destroy constructor">
+				<p class="eyebrow">Contract</p>
+				<h2>Abort signal</h2>
+				<div class="signature">interface LifecycleOptions { signal?: LifecycleSignal }</div>
+				<p><code>Lifecycle</code> accepts an abort-compatible signal. Aborting it triggers synchronous destruction. Manual destruction removes the abort listener. <code>AsyncLifecycle</code> currently has no signal constructor option.</p>
+			</section>
+
+			<section id="children" class="doc-section reference-block" data-search="children child parent event isolation detach ownership">
+				<p class="eyebrow">Contract</p>
+				<h2>Child lifecycles</h2>
+				<p>Children are ownership relationships, not event inheritance. A child may have a different event map. Parent destruction destroys live children; early child destruction detaches that child from its parent.</p>
+			</section>
+
+			<section id="ordering" class="doc-section reference-block" data-search="cleanup ordering LIFO reverse registration destroy order">
+				<p class="eyebrow">Contract</p>
+				<h2>Cleanup order</h2>
+				<p>Active cleanup entries are executed in reverse registration order. This applies to deferred callbacks, owned resources, and children because each is represented in the same teardown sequence.</p>
+			</section>
+
+			<section id="errors" class="doc-section reference-block" data-search="errors AggregateError cleanup failures event listener failures">
+				<p class="eyebrow">Contract</p>
+				<h2>Errors</h2>
+				<p>Destruction attempts every active cleanup even when earlier cleanup fails. Multiple failures are reported through <code>AggregateError</code>. Event emission also completes listener delivery before collected listener failures are reported.</p>
+			</section>
+
+			<section id="late-registration" class="doc-section reference-block" data-search="late registration destroyed Lifecycle AsyncLifecycle defer own child on once">
+				<p class="eyebrow">Contract</p>
+				<h2>Late registration</h2>
+				<div class="comparison">
+					<div><strong>Lifecycle</strong><p><code>defer()</code> after destruction executes immediately. Consequently, late <code>own()</code> destroys immediately and late <code>child()</code> returns an already-destroyed child. New event subscriptions are rejected.</p></div>
+					<div><strong>AsyncLifecycle</strong><p>New cleanup, ownership, child, and event subscriptions are rejected after destruction starts because asynchronous cleanup cannot be completed synchronously at registration time.</p></div>
+				</div>
+			</section>
+
+			<section id="types" class="doc-section reference-block" data-search="types Cleanup AsyncCleanup Destroyable AsyncDestroyable EventArguments EventListener LifecycleOptions">
+				<p class="eyebrow">Reference</p>
+				<h2>Exported types</h2>
+				<div class="type-list">
+					<div><code>Cleanup</code><span>() =&gt; void</span></div>
+					<div><code>AsyncCleanup</code><span>() =&gt; void | PromiseLike&lt;void&gt;</span></div>
+					<div><code>Destroyable</code><span>{ destroy(): void }</span></div>
+					<div><code>AsyncDestroyable</code><span>{ destroy(): void | PromiseLike&lt;void&gt; }</span></div>
+					<div><code>LifecycleOptions</code><span>{ signal?: LifecycleSignal }</span></div>
+					<div><code>EventArguments&lt;TPayload&gt;</code><span>void payload → []; otherwise [payload]</span></div>
+					<div><code>EventListener&lt;TPayload&gt;</code><span>typed synchronous listener</span></div>
+				</div>
+			</section>
+
+			<footer>
+				<span>@gottheflag/lifecycle</span>
+				<span>Static API reference · no server required</span>
+			</footer>
+		</main>
+	</div>
+
+	<div id="empty-state" class="empty-state" hidden>
+		<strong>No API entries matched.</strong>
+		<span>Try another search term.</span>
+	</div>
+
+	<script src="./docs.js"></script>
+</body>
+</html>
