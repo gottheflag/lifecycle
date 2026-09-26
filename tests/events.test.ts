@@ -18,7 +18,7 @@ type Events = {
 describe("Lifecycle events", () => {
 	it("subscribes and emits typed payload events", () => {
 		const lifecycle = new Lifecycle<Events>();
-		const calls: Events["change"][] = [];
+		const calls: Events[ "change" ][] = [];
 
 		lifecycle.on("change", (change) => {
 			calls.push(change);
@@ -202,7 +202,7 @@ describe("Lifecycle events", () => {
 		});
 
 		lifecycle.emit("ready");
-		expect(calls).toEqual(["first"]);
+		expect(calls).toEqual([ "first" ]);
 
 		lifecycle.emit("ready");
 		expect(calls).toEqual([
@@ -215,7 +215,7 @@ describe("Lifecycle events", () => {
 	it("skips a listener removed before its turn", () => {
 		const lifecycle = new Lifecycle<Events>();
 		const calls: string[] = [];
-		let offSecond = (): void => {};
+		let offSecond = (): void => { };
 
 		lifecycle.on("ready", () => {
 			calls.push("first");
@@ -341,11 +341,11 @@ describe("Lifecycle events", () => {
 		lifecycle.destroy();
 
 		expect(() => {
-			lifecycle.on("ready", () => {});
+			lifecycle.on("ready", () => { });
 		}).toThrow("Cannot subscribe to a destroyed lifecycle.");
 
 		expect(() => {
-			lifecycle.once("ready", () => {});
+			lifecycle.once("ready", () => { });
 		}).toThrow("Cannot subscribe to a destroyed lifecycle.");
 	});
 

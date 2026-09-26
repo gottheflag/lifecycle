@@ -44,17 +44,55 @@ document.addEventListener("keydown", (event) => {
 	}
 });
 
+async function copyText(text) {
+	if (navigator.clipboard && window.isSecureContext) {
+		await navigator.clipboard.writeText(text);
+		return true;
+	}
+
+	const textarea = document.createElement("textarea");
+	textarea.value = text;
+	textarea.setAttribute("readonly", "");
+	textarea.style.position = "fixed";
+	textarea.style.opacity = "0";
+	document.body.append(textarea);
+	textarea.select();
+
+	try {
+		return document.execCommand("copy");
+	} finally {
+		textarea.remove();
+	}
+}
+
+function selectInstallCommand(button) {
+	const code = button.previousElementSibling;
+	if (!(code instanceof HTMLElement)) return;
+
+	const selection = window.getSelection();
+	if (!selection) return;
+
+	const range = document.createRange();
+	range.selectNodeContents(code);
+	selection.removeAllRanges();
+	selection.addRange(range);
+}
+
 for (const button of document.querySelectorAll("[data-copy]")) {
 	button.addEventListener("click", async () => {
 		const text = button.dataset.copy;
+		let copied = false;
+
 		try {
-			await navigator.clipboard.writeText(text);
-			button.textContent = "Copied";
-			setTimeout(() => { button.textContent = "Copy"; }, 1000);
+			copied = await copyText(text);
 		} catch {
-			button.textContent = "Select";
-			setTimeout(() => { button.textContent = "Copy"; }, 1000);
+			copied = false;
 		}
+
+		if (!copied) selectInstallCommand(button);
+
+		button.textContent = copied ? "Copied" : "Selected";
+		setTimeout(() => { button.textContent = "Copy"; }, 1000);
 	});
 }
 

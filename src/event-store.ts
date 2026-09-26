@@ -14,7 +14,7 @@ export class EventStore<TEvents extends object> {
 
 	on<TKey extends keyof TEvents>(
 		type: TKey,
-		listener: EventListener<TEvents[TKey]>,
+		listener: EventListener<TEvents[ TKey ]>,
 	): Cleanup {
 		let listeners = this.#listeners.get(type);
 
@@ -24,8 +24,8 @@ export class EventStore<TEvents extends object> {
 		}
 
 		const storedListener: StoredListener = (payload) => {
-			(listener as (value: TEvents[TKey]) => void)(
-				payload as TEvents[TKey],
+			(listener as (value: TEvents[ TKey ]) => void)(
+				payload as TEvents[ TKey ],
 			);
 		};
 
@@ -50,29 +50,29 @@ export class EventStore<TEvents extends object> {
 
 	once<TKey extends keyof TEvents>(
 		type: TKey,
-		listener: EventListener<TEvents[TKey]>,
+		listener: EventListener<TEvents[ TKey ]>,
 	): Cleanup {
-		let off: Cleanup = () => {};
+		let off: Cleanup = () => { };
 
-		off = this.on(type, ((payload: TEvents[TKey]) => {
+		off = this.on(type, ((payload: TEvents[ TKey ]) => {
 			off();
 
-			(listener as (value: TEvents[TKey]) => void)(payload);
-		}) as EventListener<TEvents[TKey]>);
+			(listener as (value: TEvents[ TKey ]) => void)(payload);
+		}) as EventListener<TEvents[ TKey ]>);
 
 		return off;
 	}
 
 	emit<TKey extends keyof TEvents>(
 		type: TKey,
-		payload: TEvents[TKey],
+		payload: TEvents[ TKey ],
 	): void {
 		const listeners = this.#listeners.get(type);
 		if (!listeners?.size) return;
 
 		const errors: unknown[] = [];
 
-		for (const listener of [...listeners]) {
+		for (const listener of [ ...listeners ]) {
 			if (!listeners.has(listener)) continue;
 
 			try {

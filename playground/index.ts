@@ -33,7 +33,7 @@ const ownershipList = element<HTMLUListElement>("#ownership-list");
 const logList = element<HTMLOListElement>("#log");
 const stressButton = element<HTMLButtonElement>("#stress-test");
 const stressSummary = element<HTMLParagraphElement>("#stress-summary");
-const checks = [...document.querySelectorAll<HTMLElement>("#checks > div")];
+const checks = [ ...document.querySelectorAll<HTMLElement>("#checks > div") ];
 
 const metricElements = {
 	timers: element<HTMLElement>("#active-timers"),
@@ -156,7 +156,7 @@ function renderOwnership(): void {
 		return;
 	}
 
-	for (const entry of [...ownedEntries.values()].reverse()) {
+	for (const entry of [ ...ownedEntries.values() ].reverse()) {
 		const item = document.createElement("li");
 		const label = document.createElement("span");
 		const kind = document.createElement("small");
@@ -281,7 +281,7 @@ function listen(once: boolean): void {
 		once ? "once()" : "on()",
 	);
 
-	const listener = (event: PlaygroundEvents["ping"]): void => {
+	const listener = (event: PlaygroundEvents[ "ping" ]): void => {
 		metrics.eventCalls++;
 		log(`${once ? "Once listener" : "Listener"} ${id} received ping ${event.sequence}`);
 
@@ -324,7 +324,7 @@ function clearPing(): void {
 
 	lifecycle.clear("ping");
 
-	for (const [id, entry] of ownedEntries) {
+	for (const [ id, entry ] of ownedEntries) {
 		if (entry.kind === "on()" || entry.kind === "once()") {
 			removeOwned(id);
 		}
@@ -342,7 +342,7 @@ function destroyCurrent(): void {
 	log("Destroying lifecycle…", "warn");
 	lifecycle.destroy();
 
-	for (const [id, entry] of ownedEntries) {
+	for (const [ id, entry ] of ownedEntries) {
 		if (entry.kind === "on()" || entry.kind === "once()") {
 			removeOwned(id);
 		}
@@ -460,8 +460,8 @@ async function runStressTest(): Promise<void> {
 
 	const results = [
 		activeTimers === 0
-			&& deferredCleanups === iterations
-			&& timerFiresAfterDestroy === 0,
+		&& deferredCleanups === iterations
+		&& timerFiresAfterDestroy === 0,
 		activeResources === 0 && resourcesDestroyed === iterations,
 		activeChildren === 0,
 		postDestroyEvents === 0,
@@ -499,9 +499,9 @@ function resetChecks(): void {
 }
 
 function showChecks(results: boolean[]): void {
-	for (const [index, check] of checks.entries()) {
+	for (const [ index, check ] of checks.entries()) {
 		const value = check.querySelector("strong");
-		const passed = results[index];
+		const passed = results[ index ];
 
 		if (!value || passed === undefined) continue;
 

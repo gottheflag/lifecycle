@@ -32,9 +32,9 @@ export interface AsyncDestroyable {
 }
 
 export type EventArguments<TPayload> =
-	[TPayload] extends [void]
-		? []
-		: [payload: TPayload];
+	[ TPayload ] extends [ void ]
+	? []
+	: [ payload: TPayload ];
 
 export type EventListener<TPayload> = (
 	...args: EventArguments<TPayload>
@@ -44,10 +44,10 @@ export type NoEvents = Record<never, never>;
 
 export type RejectPromiseReturn<TFunction extends (...args: never[]) => unknown> =
 	Extract<ReturnType<TFunction>, PromiseLike<unknown>> extends never
-		? unknown
-		: never;
+	? unknown
+	: never;
 
 export type SyncDestroyable<TResource extends Destroyable> =
-	Extract<ReturnType<TResource["destroy"]>, PromiseLike<unknown>> extends never
-		? TResource
-		: never;
+	Extract<ReturnType<TResource[ "destroy" ]>, PromiseLike<unknown>> extends never
+	? TResource
+	: never;

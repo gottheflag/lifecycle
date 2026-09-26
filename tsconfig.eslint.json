@@ -1,0 +1,24 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"noEmit": true,
+		"rootDir": ".",
+		"lib": [
+			"ES2022",
+			"ESNext.Disposable",
+			"DOM",
+			"DOM.Iterable"
+		]
+	},
+	"include": [
+		"src/**/*.ts",
+		"tests/**/*.ts",
+		"playground/**/*.ts",
+		"tsup.config.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"dist",
+		"playground/dist"
+	]
+}

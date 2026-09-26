@@ -11,7 +11,6 @@ type AsyncCleanupEntry = {
 	active: boolean;
 };
 
-
 /**
  * Asynchronous counterpart to Lifecycle.
  *
@@ -40,7 +39,7 @@ export class AsyncLifecycle<
 	 * Registers sync or async cleanup work and returns an exactly-once cleanup
 	 * function. Registration after destruction is rejected because asynchronous
 	 * cleanup cannot be completed synchronously at registration time.
-	 * 
+	 *
 	 * @example
 	 * ```ts
 	 * lifecycle.defer(async () => {
@@ -89,7 +88,8 @@ export class AsyncLifecycle<
 
 	/**
 	 * Ends this lifetime exactly once and resolves after all active cleanup work
-	 * has settled. Concurrent destroy() calls receive the same promise.
+	 * has settled. Concurrent and reentrant destroy() calls receive the same
+	 * promise.
 	 */
 	destroy(): Promise<void> {
 		if (this.#destroyPromise) return this.#destroyPromise;
@@ -144,6 +144,11 @@ export class AsyncLifecycle<
 	}
 
 	async #destroyAll(cleanups: AsyncCleanupEntry[]): Promise<void> {
+		// Ensure destroy() stores #destroyPromise before any cleanup can run.
+		// Without this boundary, a synchronous cleanup can reenter destroy()
+		// before the outer call has installed its promise guard.
+		await Promise.resolve();
+
 		const errors: unknown[] = [];
 
 		for (const cleanup of cleanups) {

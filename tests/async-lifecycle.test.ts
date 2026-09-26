@@ -210,7 +210,7 @@ describe("AsyncLifecycle", () => {
 			throw new Error("Expected a parent AggregateError.");
 		}
 
-		const childFailure = failure.errors[0];
+		const childFailure = failure.errors[ 0 ];
 		expect(childFailure).toBeInstanceOf(AggregateError);
 
 		if (!(childFailure instanceof AggregateError)) {
@@ -244,11 +244,11 @@ describe("AsyncLifecycle", () => {
 
 		await lifecycle.destroy();
 
-		expect(() => lifecycle.defer(() => {})).toThrow(
+		expect(() => lifecycle.defer(() => { })).toThrow(
 			"Cannot defer cleanup on a destroyed async lifecycle.",
 		);
 
-		expect(() => lifecycle.own({ destroy(): void {} })).toThrow(
+		expect(() => lifecycle.own({ destroy(): void { } })).toThrow(
 			"Cannot own a resource on a destroyed async lifecycle.",
 		);
 
@@ -266,8 +266,8 @@ describe("AsyncLifecycle", () => {
 			calls++;
 		});
 
-		await lifecycle[Symbol.asyncDispose]();
-		await lifecycle[Symbol.asyncDispose]();
+		await lifecycle[ Symbol.asyncDispose ]();
+		await lifecycle[ Symbol.asyncDispose ]();
 
 		expect(lifecycle.destroyed).toBe(true);
 		expect(calls).toBe(1);

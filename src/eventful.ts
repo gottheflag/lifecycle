@@ -13,7 +13,7 @@ export abstract class Eventful<TEvents extends object> {
 
 	on<
 		TKey extends keyof TEvents,
-		TListener extends EventListener<TEvents[TKey]>,
+		TListener extends EventListener<TEvents[ TKey ]>,
 	>(
 		type: TKey,
 		listener: TListener & RejectPromiseReturn<TListener>,
@@ -25,7 +25,7 @@ export abstract class Eventful<TEvents extends object> {
 
 	once<
 		TKey extends keyof TEvents,
-		TListener extends EventListener<TEvents[TKey]>,
+		TListener extends EventListener<TEvents[ TKey ]>,
 	>(
 		type: TKey,
 		listener: TListener & RejectPromiseReturn<TListener>,
@@ -37,13 +37,13 @@ export abstract class Eventful<TEvents extends object> {
 
 	emit<TKey extends keyof TEvents>(
 		type: TKey,
-		...args: EventArguments<TEvents[TKey]>
+		...args: EventArguments<TEvents[ TKey ]>
 	): void {
 		if (this.destroyed) return;
 
 		const payload = (
 			args as readonly unknown[]
-		)[0] as TEvents[TKey];
+		)[ 0 ] as TEvents[ TKey ];
 
 		this.#events.emit(type, payload);
 	}

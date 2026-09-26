@@ -14,7 +14,7 @@ type CleanupEntry = {
 	active: boolean;
 };
 
-const doNothing: Cleanup = () => {};
+const doNothing: Cleanup = () => { };
 
 /**
  * Owns everything that exists for one synchronous lifetime: cleanup work,
@@ -30,7 +30,7 @@ export class Lifecycle<
 
 	constructor(options: LifecycleOptions = {}) {
 		super();
-		
+
 		const { signal } = options;
 
 		if (!signal) {
@@ -165,7 +165,7 @@ export class Lifecycle<
 		);
 	}
 
-	[Symbol.dispose](): void {
+	[ Symbol.dispose ](): void {
 		this.destroy();
 	}
 

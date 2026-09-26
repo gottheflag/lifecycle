@@ -8,8 +8,14 @@ pnpm add @gottheflag/lifecycle
 
 The package provides two primitives:
 
-- `Lifecycle<TEvents>` — synchronous cleanup, ownership, child lifecycles, and typed events.
-- `AsyncLifecycle<TEvents>` — the asynchronous counterpart with awaited teardown.
+* `Lifecycle<TEvents>` — synchronous cleanup, ownership, child lifecycles, and typed events.
+* `AsyncLifecycle<TEvents>` — the asynchronous counterpart with awaited teardown.
+
+## Requirements
+
+* Node.js 18.18.0 or newer.
+* TypeScript 5.2 or newer for TypeScript consumers.
+* Runtimes without a native `SuppressedError` require a polyfill only when both a `using` block body and its disposal throw.
 
 ## Documentation
 

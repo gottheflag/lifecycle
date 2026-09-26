@@ -1,6 +1,6 @@
 {
 	"name": "@gottheflag/lifecycle",
-	"version": "0.1.0-alpha.2",
+	"version": "0.1.0",
 	"description": "Lifetime, event, and resource management.",
 	"type": "module",
 	"main": "./dist/index.cjs",
@@ -8,30 +8,41 @@
 	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js",
-			"require": "./dist/index.cjs"
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"require": {
+				"types": "./dist/cjs/index.d.ts",
+				"default": "./dist/index.cjs"
+			}
 		}
 	},
 	"files": [
 		"dist",
+		"docs",
 		"README.md",
 		"LICENSE"
 	],
 	"sideEffects": false,
+	"engines": {
+		"node": ">=18.18.0"
+	},
 	"scripts": {
-		"build": "tsup && tsc --emitDeclarationOnly --declaration --declarationMap",
+		"build": "tsup && pnpm build:types",
+		"build:types": "tsc --emitDeclarationOnly --declaration --declarationMap && tsc --emitDeclarationOnly --declaration --declarationMap --outDir ./dist/cjs && node ./scripts/write-cjs-package.mjs",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"playground": "vite --config ./playground/vite.config.ts",
 		"typecheck": "pnpm typecheck:src && pnpm typecheck:tests && pnpm typecheck:playground",
 		"typecheck:src": "tsc --noEmit",
 		"typecheck:tests": "tsc --noEmit -p tsconfig.test.json",
+		"typecheck:playground": "tsc --noEmit -p tsconfig.playground.json",
 		"lint": "eslint . --max-warnings=0",
 		"lint:fix": "eslint . --fix --max-warnings=0",
-		"check": "pnpm typecheck && pnpm lint && pnpm test && pnpm build",
-		"prepack": "pnpm build",
-		"typecheck:playground": "tsc --noEmit -p tsconfig.playground.json"
+		"check:package": "pnpm build && node ./scripts/check-package.mjs",
+		"check": "pnpm typecheck && pnpm lint && pnpm test && pnpm check:package",
+		"prepack": "pnpm build"
 	},
 	"keywords": [
 		"lifecycle",

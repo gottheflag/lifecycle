@@ -4,8 +4,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="color-scheme" content="light dark">
-	<title>@gottheflag/lifecycle — API Reference</title>
-	<meta name="description" content="API reference for @gottheflag/lifecycle.">
+	<title>@gottheflag/lifecycle 0.1.0 — API Reference</title>
+	<meta name="description" content="API reference for @gottheflag/lifecycle 0.1.0.">
 	<link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -16,7 +16,7 @@
 			<div class="brand-mark" aria-hidden="true">L</div>
 			<div>
 				<strong>@gottheflag/lifecycle</strong>
-				<span>API Reference · 0.1.0-alpha.1</span>
+				<span>API Reference · 0.1.0</span>
 			</div>
 		</div>
 
@@ -34,6 +34,7 @@
 					<p>Start</p>
 					<a href="#overview">Overview</a>
 					<a href="#installation">Installation</a>
+					<a href="#requirements">Requirements</a>
 					<a href="#exports">Exports</a>
 				</div>
 
@@ -82,13 +83,13 @@
 		</aside>
 
 		<main id="content" class="content">
-			<section id="overview" class="hero doc-section" data-search="overview lifecycle resource events cleanup ownership">
+			<section id="overview" class="hero doc-section" data-search="overview lifecycle resource events cleanup ownership version 0.1.0">
 				<p class="eyebrow">Reference</p>
 				<h1>Lifecycle</h1>
 				<p class="lead">Typed lifetime, event, and resource management for JavaScript and TypeScript.</p>
 				<div class="facts">
 					<div><span>Package</span><strong>@gottheflag/lifecycle</strong></div>
-					<div><span>Version</span><strong>0.1.0-alpha.1</strong></div>
+					<div><span>Version</span><strong>0.1.0</strong></div>
 					<div><span>Modules</span><strong>ESM + CJS</strong></div>
 					<div><span>License</span><strong>Apache-2.0</strong></div>
 				</div>
@@ -107,7 +108,17 @@
 				</div>
 			</section>
 
-			<section id="exports" class="doc-section" data-search="exports Lifecycle AsyncLifecycle LifecycleOptions Cleanup AsyncCleanup Destroyable AsyncDestroyable EventArguments EventListener">
+			<section id="requirements" class="doc-section reference-block" data-search="requirements compatibility node nodejs typescript suppressederror explicit resource management using">
+				<p class="eyebrow">Start</p>
+				<h2>Requirements</h2>
+				<div class="type-list">
+					<div><code>Node.js</code><span>18.18.0 or newer.</span></div>
+					<div><code>TypeScript</code><span>5.2 or newer for TypeScript consumers.</span></div>
+					<div><code>SuppressedError</code><span>Runtimes without a native implementation need a polyfill only when both a using block body and its disposal throw.</span></div>
+				</div>
+			</section>
+
+			<section id="exports" class="doc-section" data-search="exports Lifecycle AsyncLifecycle LifecycleOptions LifecycleSignal NoEvents Cleanup AsyncCleanup Destroyable AsyncDestroyable EventArguments EventListener">
 				<div class="section-heading">
 					<p class="eyebrow">Package surface</p>
 					<h2>Exports</h2>
@@ -116,6 +127,8 @@
 					<div><code>Lifecycle</code><span>Class</span><p>Synchronous lifetime, ownership, cleanup, child, and event management.</p></div>
 					<div><code>AsyncLifecycle</code><span>Class</span><p>Asynchronous lifetime management with awaited teardown.</p></div>
 					<div><code>LifecycleOptions</code><span>Type</span><p>Constructor options accepted by <code>Lifecycle</code>.</p></div>
+					<div><code>LifecycleSignal</code><span>Type</span><p>Environment-agnostic structural contract for an abort-compatible signal.</p></div>
+					<div><code>NoEvents</code><span>Type</span><p>Empty event map used by lifecycles with no typed events.</p></div>
 					<div><code>Cleanup</code><span>Type</span><p>Synchronous cleanup callback.</p></div>
 					<div><code>AsyncCleanup</code><span>Type</span><p>Synchronous or asynchronous cleanup callback.</p></div>
 					<div><code>Destroyable</code><span>Type</span><p>Resource exposing synchronous <code>destroy()</code>.</p></div>
@@ -134,7 +147,7 @@
 				<div class="signature">class Lifecycle&lt;TEvents extends object = NoEvents&gt;</div>
 			</section>
 
-			<article id="lifecycle-constructor" class="api-card doc-section" data-search="Lifecycle constructor options signal">
+			<article id="lifecycle-constructor" class="api-card doc-section" data-search="Lifecycle constructor options signal LifecycleSignal">
 				<div class="api-title"><h3>constructor</h3><span>Lifecycle</span></div>
 				<div class="signature">new Lifecycle&lt;TEvents&gt;(options?: LifecycleOptions)</div>
 				<p>Creates a synchronous lifecycle. When an abort-compatible signal is supplied, aborting that signal destroys the lifecycle. An already-aborted signal creates an already-destroyed lifecycle.</p>
@@ -253,7 +266,7 @@
 				<p>Removes every event listener or every listener for one event key. It does not run deferred cleanup, destroy resources, or destroy child lifecycles.</p>
 			</article>
 
-			<section id="signals" class="doc-section reference-block" data-search="signal AbortSignal LifecycleOptions abort destroy constructor">
+			<section id="signals" class="doc-section reference-block" data-search="signal LifecycleSignal AbortSignal LifecycleOptions abort destroy constructor">
 				<p class="eyebrow">Contract</p>
 				<h2>Abort signal</h2>
 				<div class="signature">interface LifecycleOptions { signal?: LifecycleSignal }</div>
@@ -272,7 +285,7 @@
 				<p>Active cleanup entries are executed in reverse registration order. This applies to deferred callbacks, owned resources, and children because each is represented in the same teardown sequence.</p>
 			</section>
 
-			<section id="errors" class="doc-section reference-block" data-search="errors AggregateError cleanup failures event listener failures">
+			<section id="errors" class="doc-section reference-block" data-search="errors AggregateError SuppressedError cleanup failures event listener failures">
 				<p class="eyebrow">Contract</p>
 				<h2>Errors</h2>
 				<p>Destruction attempts every active cleanup even when earlier cleanup fails. Multiple failures are reported through <code>AggregateError</code>. Event emission also completes listener delivery before collected listener failures are reported.</p>
@@ -287,7 +300,7 @@
 				</div>
 			</section>
 
-			<section id="types" class="doc-section reference-block" data-search="types Cleanup AsyncCleanup Destroyable AsyncDestroyable EventArguments EventListener LifecycleOptions">
+			<section id="types" class="doc-section reference-block" data-search="types Cleanup AsyncCleanup Destroyable AsyncDestroyable EventArguments EventListener LifecycleOptions LifecycleSignal NoEvents">
 				<p class="eyebrow">Reference</p>
 				<h2>Exported types</h2>
 				<div class="type-list">
@@ -296,6 +309,8 @@
 					<div><code>Destroyable</code><span>{ destroy(): void }</span></div>
 					<div><code>AsyncDestroyable</code><span>{ destroy(): void | PromiseLike&lt;void&gt; }</span></div>
 					<div><code>LifecycleOptions</code><span>{ signal?: LifecycleSignal }</span></div>
+					<div><code>LifecycleSignal</code><span>{ readonly aborted: boolean; addEventListener(...); removeEventListener(...) }</span></div>
+					<div><code>NoEvents</code><span>Record&lt;never, never&gt;</span></div>
 					<div><code>EventArguments&lt;TPayload&gt;</code><span>void payload → []; otherwise [payload]</span></div>
 					<div><code>EventListener&lt;TPayload&gt;</code><span>typed synchronous listener</span></div>
 				</div>
@@ -303,7 +318,7 @@
 
 			<footer>
 				<span>@gottheflag/lifecycle</span>
-				<span>Static API reference · no server required</span>
+				<span>v0.1.0 · Static API reference · no server required</span>
 			</footer>
 		</main>
 	</div>

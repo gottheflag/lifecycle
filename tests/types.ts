@@ -23,13 +23,13 @@ type ChildEvents = {
 
 const lifecycle = new Lifecycle<Events>();
 
-const cleanup: Cleanup = lifecycle.defer(() => {});
+const cleanup: Cleanup = lifecycle.defer(() => { });
 const child: Lifecycle<ChildEvents> = lifecycle.child<ChildEvents>();
 const disposable: Disposable = lifecycle;
 
 const resource = lifecycle.own({
 	name: "resource",
-	destroy(): void {},
+	destroy(): void { },
 });
 
 const destroyable: Destroyable = resource;
@@ -43,7 +43,7 @@ const offChange: Cleanup = lifecycle.on("change", (change) => {
 	void to;
 });
 
-const readyListener: EventListener<void> = () => {};
+const readyListener: EventListener<void> = () => { };
 const offReady: Cleanup = lifecycle.once("ready", readyListener);
 
 lifecycle.emit("ready");
@@ -65,33 +65,33 @@ lifecycle.emit("ready", undefined);
 // @ts-expect-error wrong payload
 lifecycle.emit("message", 123);
 // @ts-expect-error unknown event
-lifecycle.on("missing", () => {});
+lifecycle.on("missing", () => { });
 // @ts-expect-error async listeners would be silently ignored by synchronous emit
-lifecycle.on("ready", async () => {});
+lifecycle.on("ready", async () => { });
 // @ts-expect-error async cleanup belongs to AsyncLifecycle
-lifecycle.defer(async () => {});
+lifecycle.defer(async () => { });
 // @ts-expect-error async resources belong to AsyncLifecycle
 lifecycle.own({
-	async destroy(): Promise<void> {},
+	async destroy(): Promise<void> { },
 });
 
 const asyncLifecycle = new AsyncLifecycle<Events>();
 const asyncDisposable: AsyncDisposable = asyncLifecycle;
-const asyncCleanup: AsyncCleanup = asyncLifecycle.defer(async () => {});
+const asyncCleanup: AsyncCleanup = asyncLifecycle.defer(async () => { });
 
 const asyncResource = asyncLifecycle.own({
 	name: "async resource",
-	async destroy(): Promise<void> {},
+	async destroy(): Promise<void> { },
 });
 
 const asyncDestroyable: AsyncDestroyable = asyncResource;
 
-asyncLifecycle.on("ready", () => {});
+asyncLifecycle.on("ready", () => { });
 asyncLifecycle.emit("ready");
 
 // Events remain synchronous even on AsyncLifecycle.
 // @ts-expect-error async event listeners are not awaited
-asyncLifecycle.on("ready", async () => {});
+asyncLifecycle.on("ready", async () => { });
 
 void cleanup;
 void child;
@@ -107,7 +107,7 @@ void asyncDestroyable;
 export function usingLifecycle(): void {
 	using scope = new Lifecycle();
 
-	scope.defer(() => {});
+	scope.defer(() => { });
 }
 
 export async function usingAsyncLifecycle(): Promise<void> {

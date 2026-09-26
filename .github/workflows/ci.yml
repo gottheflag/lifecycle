@@ -1,45 +1,61 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - dev
+    push:
+        branches:
+            - main
+            - dev
+    pull_request:
+        branches:
+            - main
+        #   - dev
 
 permissions:
-  contents: read
+    contents: read
 
 concurrency:
-  group: lifecycle-ci-${{ github.ref }}
-  cancel-in-progress: true
+    group: lifecycle-ci-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-  verify:
-    name: Verify
-    runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    verify:
+        name: Verify
+        runs-on: ubuntu-24.04
+        timeout-minutes: 10
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
 
-      - name: Setup pnpm and Node.js
-        uses: pnpm/setup@c9883cc79df532ad1a7b81bf9ab944ceb090d65c # v2.0.0
-        with:
-          runtime: node@22.14.0
-          cache: false
-          install: false
+            - name: Setup pnpm and Node.js
+              uses: pnpm/setup@c9883cc79df532ad1a7b81bf9ab944ceb090d65c # v2.0.0
+              with:
+                  runtime: node@22.14.0
+                  cache: false
+                  install: false
 
-      - name: Install dependencies
-        run: pnpm install
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
 
-      - name: Type-check
-        run: pnpm typecheck
+            - name: Type-check
+              run: pnpm typecheck
 
-      - name: Lint
-        run: pnpm lint
+            - name: Lint
+              run: pnpm lint
 
-      - name: Test
-        run: pnpm test
+            - name: Test
+              run: pnpm test
 
-      - name: Build
-        run: pnpm build
+            - name: Package smoke test
+              run: pnpm check:package
+
+            - name: Setup minimum supported Node.js
+              uses: actions/setup-node@v7
+              with:
+                  node-version: 18.18.0
+
+            - name: Runtime smoke test on Node.js 18.18.0
+              shell: bash
+              run: |
+                  node --input-type=module -e 'const { Lifecycle } = await import("./dist/index.js"); const lifecycle = new Lifecycle(); let calls = 0; lifecycle.defer(() => { calls++; }); lifecycle.destroy(); if (calls !== 1 || typeof Symbol.dispose !== "symbol" || typeof Symbol.asyncDispose !== "symbol") throw new Error("ESM runtime floor smoke test failed.");'
+                  node -e 'const { Lifecycle } = require("./dist/index.cjs"); const lifecycle = new Lifecycle(); let calls = 0; lifecycle.defer(() => { calls++; }); lifecycle.destroy(); if (calls !== 1 || typeof lifecycle[Symbol.dispose] !== "function") throw new Error("CJS runtime floor smoke test failed.");'
